@@ -1,0 +1,27 @@
+#!/usr/bin/perl
+# vim: ts=2 sw=2 ft=perl
+eval 'exec perl -x -wS $0 ${1+"$@"}'
+  if 0;
+BEGIN { $DB::single=1; }
+$|++;
+use lib "lib";
+use common::sense;
+use autodie;
+use Nobody::Util;
+use Nobody::PP;
+use JSON::MaybeXS();
+use OpenAI::API;
+
+our(@VERSION) = qw( 0 1 0 );
+sub encode_json {
+  JSON::MaybeXS->new({pretty=>1, utf8=>1})->encode(@_);;
+};
+sub decode_json {
+  JSON::MaybeXS->new({pretty=>1, utf8=>1})->decode(@_);;
+};
+my (@text)=map { path($_)->slurp } @ARGV;
+for( encode_json(\@text) ) {
+  s{^\[\s*}{};
+  s{\s*\]$}{};
+  say;
+};

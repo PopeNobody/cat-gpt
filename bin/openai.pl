@@ -2,6 +2,7 @@
 # vim: ts=2 sw=2 ft=perl
 eval 'exec perl -x -wS $0 ${1+"$@"}'
   if 0;
+BEGIN { $DB::single=1; }
 $|++;
 use lib "lib";
 use common::sense;
@@ -22,18 +23,23 @@ sub decode_json {
 my $openai = OpenAI::API->new();    
 my ($file)=path("conv/current.json");
 unless($file->exists) {
-  my ($dated)=join(".",$file, serdate);
+  my ($dated)=path(join(".",$file, serdate));
   say $dated;
-  system("echo cp conv/parts/system.json $dated ");
-  exit(0);
+  system("cp conv/parts/system.json $dated ");
+  symlink($dated->basename, $file)
 };
 our ($messages,@messages) ; 
 *messages=$messages=decode_json($file->slurp);
-my $res = $openai->chat(
-  messages => \@messages,
-);
-my $message = $res->{choices}[0]{message};
-push(@messages,$message);
+if(defined($ENV{DRY_RUN})){
+  say STDERR "DRY_RUN is set";
+  push(@messages,{ role=>"nobody", content=>serdate() });
+} else {
+  my $res = $openai->chat(
+    messages => \@messages,
+  );
+  my $message = $res->{choices}[0]{message};
+  push(@messages,$message);
+};
 my ($dated)=path(join(".",$file, serdate));
 my $json=encode_json(\@messages);
 open(STDOUT,">","$dated");
