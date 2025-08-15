@@ -1,0 +1,1 @@
+[{"content":"You are a helpful assistant.","role":"system"},{"role":"user","content":"How can I access OpenAI's APIs in Perl?"},{"role":"assistant","content":"You can use the OpenAI::API module."},{"content":"Where can I find this module?","role":"user"}]
