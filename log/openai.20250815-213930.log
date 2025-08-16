@@ -1,0 +1,7 @@
+Error: '404 Not Found'
+
+Trace begun at lib/OpenAI/API/Request.pm line 189
+OpenAI::API::Request::_send_request('OpenAI::API::Request::Chat=HASH(0x55dbcb4d6950)', 'HTTP::Request=HASH(0x55dbcaf0bbc8)') called at lib/OpenAI/API/Request.pm line 117
+OpenAI::API::Request::_post('OpenAI::API::Request::Chat=HASH(0x55dbcb4d6950)') called at lib/OpenAI/API/Request.pm line 94
+OpenAI::API::Request::send('OpenAI::API::Request::Chat=HASH(0x55dbcb4d6950)') called at lib/OpenAI/API.pm line 35
+OpenAI::API::__ANON__('OpenAI::API=HASH(0x55dbcaad6e08)', 'messages', 'ARRAY(0x55dbca626858)') called at /home/nn/src/cat-gpt/cat-gpt/bin/openai.pl line 41

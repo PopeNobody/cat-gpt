@@ -1,6 +1,6 @@
 [
   {
-    "content": "You are a helpful assistant.",
+    "content": "You are a helpful assistant.\n\nToday, we are working with a script called cat-gpt, which communicates via\nthe api.  It takes a messages array on standard input, sends it to an llm,\nand then dumps it to standard output.  The essages array can then go to me,\nor to another llm.\n",
     "role": "system"
   }
 ]

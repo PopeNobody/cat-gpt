@@ -1,0 +1,16 @@
+[
+  {
+    "content": "You are a helpful assistant.",
+    "role": "system"
+  },
+  {
+    "role": "assistant",
+    "content": "How can I assist you today?",
+    "annotations": [],
+    "refusal": null
+  },
+  {
+    "role": "nobody",
+    "content": "20250815-212242"
+  }
+]
