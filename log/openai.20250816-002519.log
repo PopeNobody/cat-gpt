@@ -1,4 +1,0 @@
-syntax error at ./bin/openai.pl line 45, near ""model":"
-Global symbol "$res" requires explicit package name (did you forget to declare "my $res"?) at ./bin/openai.pl line 47.
-syntax error at ./bin/openai.pl line 49, near "}"
-Execution of ./bin/openai.pl aborted due to compilation errors.
