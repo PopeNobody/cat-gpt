@@ -5,11 +5,11 @@ eval 'exec perl -x -wS $0 ${1+"$@"}'
 BEGIN { $DB::single=1; }
 $|++;
 use lib "lib";
-use common::sense;
 use autodie;
-use Nobody::Util;
-use Nobody::PP;
+use common::sense;
 use JSON::MaybeXS();
+use Nobody::PP;
+use Nobody::Util;
 use OpenAI::API;
 use Text::Wrap;
 
@@ -21,7 +21,16 @@ sub decode_json {
   JSON::MaybeXS->new({pretty=>1, utf8=>1})->decode(@_);;
 };
 @ARGV=qw( conv/current.json ) unless @ARGV;
-*_ = decode_json( join("", <>) );
-for(@_){
-  say '"', $_->{content}, '"', "\n";
+for my $file(@ARGV) {
+  my ($json)=path($file)->slurp;
+  my ($pobj)=decode_json($json);
+  for(@{$pobj}) {
+    my ($role)=$_->{role};
+    say " | --------";
+    say " |";
+    say " | role: $role";
+    say " |";
+    say " | $_" for split(m{\n},fill("","",$_->{content}));
+    say " |";
+  };
 };

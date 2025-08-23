@@ -2,7 +2,6 @@
 # vim: ts=2 sw=2 ft=perl
 eval 'exec perl -x -wS $0 ${1+"$@"}'
   if 0;
-BEGIN { $DB::single=1; }
 $|++;
 use lib "lib";
 use common::sense;
@@ -19,9 +18,25 @@ sub encode_json {
 sub decode_json {
   JSON::MaybeXS->new({pretty=>1, utf8=>1})->decode(@_);;
 };
-my (@text)=map { path($_)->slurp } @ARGV;
-for( encode_json(\@text) ) {
+sub json_any {
+  return map { json_any($_) } @_ if @_ !=1;
+  local($_)=decode_json([shift]);
   s{^\[\s*}{};
   s{\s*\]$}{};
-  say;
+  $_;
+};
+my(@text);
+if(@ARGV) {
+  (@text)=map { path($_)->slurp } @ARGV;
+} else {
+  (@text)=join( "", <STDIN> );
+};
+$DB::single=1;
+for(@text) {
+  local($_)=[ $_ ];
+  my ($o) = encode_json($_);
+  my ($o,$c) = qw( [ ] );
+  s{^\s*[$o]\s*}{};
+  s{\s*[$c]\s*$}{};
+  say $o;
 };
