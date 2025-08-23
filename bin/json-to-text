@@ -7,30 +7,24 @@ $|++;
 use lib "lib";
 use autodie;
 use common::sense;
-use JSON::MaybeXS();
+use Nobody::JSON;
 use Nobody::PP;
 use Nobody::Util;
 use OpenAI::API;
 use Text::Wrap;
-
+use Getopt::WonderBra;
+our(%args);
 our(@VERSION) = qw( 0 1 0 );
-sub encode_json {
-  JSON::MaybeXS->new({pretty=>1, utf8=>1})->encode(@_);;
-};
-sub decode_json {
-  JSON::MaybeXS->new({pretty=>1, utf8=>1})->decode(@_);;
-};
 @ARGV=qw( conv/current.json ) unless @ARGV;
 for my $file(@ARGV) {
   my ($json)=path($file)->slurp;
   my ($pobj)=decode_json($json);
   for(@{$pobj}) {
     my ($role)=$_->{role};
-    say " | --------";
-    say " |";
-    say " | role: $role";
-    say " |";
-    say " | $_" for split(m{\n},fill("","",$_->{content}));
-    say " |";
+    say "";
+    say "role: $role";
+    say "";
+    say "$_" for split(m{\n},fill("","",$_->{content}));
+    say "";
   };
 };
